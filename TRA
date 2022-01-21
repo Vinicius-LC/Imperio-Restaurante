@@ -1,0 +1,26 @@
+function TRA() {
+  var Form = HtmlService.createTemplateFromFile("FormTeste")
+
+  var Mostrar = Form.evaluate();
+
+  Mostrar.setTitle("Lista de Teste").setHeight(300).setWidth(400);
+
+
+  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Lista de Teste");
+}
+function Caixa(){
+  var Form = HtmlService.createTemplateFromFile("Caixa2")
+  var Mostrar = Form.evaluate()
+  Mostrar.setTitle("Caixa2").setHeight(500).setWidth(600)
+  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Caixa2")
+}
+function Chamar(Arquivo){
+  return HtmlService.createHtmlOutputFromFile('Arquivo')
+}
+function enviar() {
+  var app = SpreadsheetApp
+  var spreadsheet = app.getActiveSpreadsheet()
+  var sheet = spreadsheet.getSheetByName("Fluxo de Caixa")
+  var linha = sheet.getLastRow+1
+  var val = document.getElementByID('Valor').value
+  var test = sheet.getRange("E3").setValue(val)
