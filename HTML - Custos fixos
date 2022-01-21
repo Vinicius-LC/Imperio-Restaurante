@@ -1,1 +1,84 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!-- Compiled and minified CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+      <div class = "objeto">
+        <div class="row">
+
+          <div class="input-field col s6">
+            <i class="material-icons prefix">date_range</i>
+            <input id="mes" type="text" class="validate">
+            <label for="mes">Mês</label>
+          </div>
+
+          <div class="input-field col s6">
+            <i class="material-icons prefix">attach_money</i>
+            <input id="aluguel" type="text" class="validate">
+            <label for="aluguel">Aluguel</label>
+          </div>
+
+          <div class="input-field col s6">
+            <i class="material-icons prefix">whatshot</i>
+            <input id="gas" type="text" class="validate">
+            <label for="gas">Gás</label>
+          </div>
+
+          <div class="input-field col s6">
+            <i class="material-icons prefix">wifi</i>
+            <input id="internet" type="text" class="validate">
+            <label for="internet">Internet</label>
+          </div>
+
+          <div class="input-field col s6">
+            <i class="material-icons prefix">lightbulb_outline</i>
+            <input id="luz" type="text" class="validate">
+            <label for="luz">Luz</label>
+          </div>
+
+          <div class="input-field col s6">
+            <i class="material-icons prefix">opacity</i>
+            <input id="agua" type="text" class="validate">
+            <label for="agua">Água</label>
+          </div>
+
+        </div>
+
+        <div class = "center">
+
+          <button class="btn waves-effect green" type="submit" name="btn1">Salvar
+            <i class="material-icons right">save</i>
+          </button>
+
+          <button class="btn waves-effect blue" type="submit" name="btn2">Pesquisar
+            <i class="material-icons right">search</i>
+          </button>
+
+          <button class="btn waves-effect orange" type="submit" name="btn3">Editar
+            <i class="material-icons right">edit</i>
+          </button>
+
+          <button class="btn waves-effect red" type="submit" name="btn4">Excluir
+            <i class="material-icons right">delete</i>
+          </button>
+
+          <button class="btn waves-effect black" type="submit" name="btn5">Fechar
+            <i class="material-icons right">close</i>
+          </button>
+        
+        </div>
+
+      </div>
+
+      <!-- Compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </body>
+  </html>

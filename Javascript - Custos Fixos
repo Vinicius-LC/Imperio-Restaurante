@@ -1,1 +1,12 @@
+function ContasMensais() {
+
+  var Form = HtmlService.createTemplateFromFile("ContasMensais");
+
+  var MostrarForm = Form.evaluate();
+
+  MostrarForm.setTitle("Cadastro Contas Mensais").setHeight(300).setWidth(650);
+
+  SpreadsheetApp.getUi().showModalDialog(MostrarForm, "Cadastro Contas Mensais");
+  
+}
 
