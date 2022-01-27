@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+      <div class="container">
+        <label>Entrada/Saída</label>
+          <select class="browser-default" id="select">
+            <option value="Entrada">Entrada</option>
+            <option value="Saída">Saída</option>
+          </select>
+        <div class="input-field col s6">
+          <input id="Valor" type="number">
+          <label class="active" for="Valor">Valor</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="Fornecedor" type="text">
+          <label class="active" for="Fornecedor">Fornecedor</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="Desc" type="text">
+          <label class="active" for="Desc">Descrição</label>
+        </div>
+          <br> <br>
+        <div>
+          <button class="btn waves-effect green" type="button" id="confirma" onclick="Salvar()">Confirma
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script>
+        var CampoEnt = document.getElementById('select')
+        var CampoForn = document.getElementById("Fornecedor")
+        var CampoDesc = document.getElementById("Desc")
+        var CampoVal = document.getElementById("Valor")
+        function Salvar() {
+          var ent = CampoEnt.value
+          var val = CampoVal.value
+          var forn = CampoForn.value
+          var desc = CampoDesc.value
+          var Dados = {
+            ent: CampoEnt.value,
+            forn: CampoForn.value,
+            desc: CampoDesc.value,
+            val: CampoVal.value
+          }
+          google.script.run.enviar(Dados)
+          M.toast({html: 'Dados enviados com sucesso!'})
+          CampoForn = ''
+          CampoDesc = ''
+          CampoVal = ''
+        }
+      </script>
+    </body>
+  </html>
