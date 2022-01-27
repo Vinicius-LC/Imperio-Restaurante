@@ -1,59 +1,35 @@
-<!DOCTYPE html>
-  <html>
-    <head>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-      <div class="container">
-        <label>Entrada/Saída</label>
-          <select class="browser-default" id="select">
-            <option value="Entrada">Entrada</option>
-            <option value="Saída">Saída</option>
-          </select>
-        <div class="input-field col s6">
-          <input id="Valor" type="number">
-          <label class="active" for="Valor">Valor</label>
-        </div>
-        <div class="input-field col s6">
-          <input id="Fornecedor" type="text">
-          <label class="active" for="Fornecedor">Fornecedor</label>
-        </div>
-        <div class="input-field col s6">
-          <input id="Desc" type="text">
-          <label class="active" for="Desc">Descrição</label>
-        </div>
-          <br> <br>
-        <div>
-          <button class="btn waves-effect green" type="button" id="confirma" onclick="Salvar()">Confirma
-            <i class="material-icons right">send</i>
-          </button>
-        </div>
-      </div>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-      <script>
-        var CampoEnt = document.getElementById('select')
-        var CampoForn = document.getElementById("Fornecedor")
-        var CampoDesc = document.getElementById("Desc")
-        var CampoVal = document.getElementById("Valor")
-        function Salvar() {
-          var ent = CampoEnt.value
-          var val = CampoVal.value
-          var forn = CampoForn.value
-          var desc = CampoDesc.value
-          var Dados = {
-            ent: CampoEnt.value,
-            forn: CampoForn.value,
-            desc: CampoDesc.value,
-            val: CampoVal.value
-          }
-          google.script.run.enviar(Dados)
-          M.toast({html: 'Dados enviados com sucesso!'})
-          CampoForn = ''
-          CampoDesc = ''
-          CampoVal = ''
-        }
-      </script>
-    </body>
-  </html>
+var id = '1TFdXJ3VVi-c6pn36PMltkMJDympYS3TDw586uzc8Abw'
+function Caixa(){
+  var Form = HtmlService.createTemplateFromFile("Caixa2")
+  var Mostrar = Form.evaluate()
+  Mostrar.setTitle("Caixa45").setHeight(500).setWidth(600)
+  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Caixa")
+}
+function enviar(Dados) {
+  var spreadsheet = SpreadsheetApp.openById(id)
+  var sheet = spreadsheet.getSheetByName('Fluxo de Caixa')
+  sheet.getRange('B1').activate()
+  sheet.getCurrentCell().getNextDataCell(SpreadsheetApp.Direction.DOWN).activate()
+  sheet.getActiveCell().offset(1,0).activate()
+  var linha = sheet.getActiveCell().getRow()
+  var data = (new Date).getDate()
+  sheet.getRange(linha,1).setValue(data)
+  sheet.getRange(linha, 2).setValue([Dados.ent])
+  sheet.getRange(linha, 3).setValue([Dados.forn])
+  sheet.getRange(linha, 4).setValue([Dados.desc])
+  sheet.getRange(linha, 5).setValue([Dados.val]) 
+}
+
+function pamonha(){
+var spreadsheet = SpreadsheetApp.openById(id)
+  var sheet = spreadsheet.getSheetByName('Fluxo de Caixa')
+  sheet.getRange('B15').setValue("PAMONHA BARATA")
+
+}
+function onEditAction(e) {
+  var ss = e.source.getActiveSheet()
+  var range = e.range.getA1Notation()
+  if(ss.getName() != 'Fluxo de Caixa' || range != 'G22') {return}
+  Caixa()
+  ss.getRange('G22').clearContent()
+}
