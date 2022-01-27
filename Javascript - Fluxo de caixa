@@ -1,1 +1,35 @@
+var id = '1TFdXJ3VVi-c6pn36PMltkMJDympYS3TDw586uzc8Abw'
+function Caixa(){
+  var Form = HtmlService.createTemplateFromFile("Caixa2")
+  var Mostrar = Form.evaluate()
+  Mostrar.setTitle("Caixa45").setHeight(500).setWidth(600)
+  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Caixa")
+}
+function enviar(Dados) {
+  var spreadsheet = SpreadsheetApp.openById(id)
+  var sheet = spreadsheet.getSheetByName('Fluxo de Caixa')
+  sheet.getRange('B1').activate()
+  sheet.getCurrentCell().getNextDataCell(SpreadsheetApp.Direction.DOWN).activate()
+  sheet.getActiveCell().offset(1,0).activate()
+  var linha = sheet.getActiveCell().getRow()
+  var data = (new Date).getDate()
+  sheet.getRange(linha,1).setValue(data)
+  sheet.getRange(linha, 2).setValue([Dados.ent])
+  sheet.getRange(linha, 3).setValue([Dados.forn])
+  sheet.getRange(linha, 4).setValue([Dados.desc])
+  sheet.getRange(linha, 5).setValue([Dados.val]) 
+}
 
+function pamonha(){
+var spreadsheet = SpreadsheetApp.openById(id)
+  var sheet = spreadsheet.getSheetByName('Fluxo de Caixa')
+  sheet.getRange('B15').setValue("PAMONHA BARATA")
+
+}
+function onEditAction(e) {
+  var ss = e.source.getActiveSheet()
+  var range = e.range.getA1Notation()
+  if(ss.getName() != 'Fluxo de Caixa' || range != 'G22') {return}
+  Caixa()
+  ss.getRange('G22').clearContent()
+}
