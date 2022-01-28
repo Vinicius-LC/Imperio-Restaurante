@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+    <div class="container">
+        <label>Entrada/Saída</label>
+          <select class="browser-default" id="select">
+            <option value="Entrada">Entrada</option>
+            <option value="Saída">Saída</option>
+          </select>
+        <div class="input-field col s6">
+            <input id="Data" type="date">
+            <label class="active" for="Data">Data</label>
+        </div>
+        <div>
+          <button class="btn waves-effect yellow" type="button" id="Pesquisar" onclick="pesquisa()">Pesquisar
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script>
+        var CampoEnt = document.getElementById('select')
+        var CampoData = document.getElementById("Data")
+        function Salvar() {
+          var ent = CampoEnt.value
+          var data = CampoData.value
+          var DadosP = {
+            ent: CampoEnt.value,
+            data: CampoData.value,
+          }
+          google.script.run.pesquisa(DadosP)
+          M.toast({html: 'Filtro Aplicado com Sucesso'})
+          document.close()
+          google.script.run.pesquisa()
+        }
+    </script>
+    </body>
+</html>
+    
+    
+        
