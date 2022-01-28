@@ -1,0 +1,62 @@
+function pesquisa(DadosP) {
+  var spreadsheet = SpreadsheetApp.openById(id)
+  var sheet = spreadsheet.getSheetByName('Fluxo de Caixa')
+  spreadsheet.getRange('A1').activate();
+  var criteria = SpreadsheetApp.newFilterCriteria()
+  .setVisibleValues(DadosP.data)
+  .build();
+  spreadsheet.getActiveSheet().getFilter().setColumnFilterCriteria(1, criteria);
+  spreadsheet.getRange('B1').activate();
+   var criteria = SpreadsheetApp.newFilterCriteria()
+  .setVisibleValues(DadosP.ent)
+  .build();
+};
+
+function pesquisa(DadosP) {
+  var spreadsheet = SpreadsheetApp.getActive();
+  spreadsheet.getRange('A1:E1').activate();
+  var currentCell = spreadsheet.getCurrentCell();
+  spreadsheet.getSelection().getNextDataRange(SpreadsheetApp.Direction.DOWN).activate();
+  currentCell.activateAsCurrentCell();
+  spreadsheet.getRange('A1:E20').createFilter();
+  spreadsheet.getRange('A1').activate();
+  var criteria = SpreadsheetApp.newFilterCriteria()
+  .setVisibleValues([DadosP.data])
+  .build();
+  spreadsheet.getActiveSheet().getFilter().setColumnFilterCriteria(1, criteria);
+  spreadsheet.getRange('B1').activate();
+  criteria = SpreadsheetApp.newFilterCriteria()
+  .setVisibleValues([DadosP.ent])
+  .build();
+  spreadsheet.getActiveSheet().getFilter().setColumnFilterCriteria(2, criteria);
+};
+function Pesquisar(){
+  var Form = HtmlService.createTemplateFromFile("Pesquisar1")
+  var Mostrar = Form.evaluate()
+  Mostrar.setTitle("Pesquisa").setHeight(500).setWidth(600)
+  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Pesquisa")
+}
+function pesquisa(DadosP) {
+  var spreadsheet = SpreadsheetApp.getActive();
+  spreadsheet.getRange('A1:E1').activate();
+  var currentCell = spreadsheet.getCurrentCell();
+  spreadsheet.getSelection().getNextDataRange(SpreadsheetApp.Direction.DOWN).activate();
+  currentCell.activateAsCurrentCell();
+  spreadsheet.getRange('A1:E20').createFilter();
+  spreadsheet.getRange('A1').activate(); 
+  var criteria = SpreadsheetApp.newFilterCriteria()
+  .whenDateEqualTo(DadosP.data)
+  .build();
+  spreadsheet.getActiveSheet().getFilter().setColumnFilterCriteria(1, criteria);
+  spreadsheet.getRange('B1').activate();
+  criteria = SpreadsheetApp.newFilterCriteria()
+  .whenTextEqualTo(DadosP.ent)
+  .build();
+  spreadsheet.getActiveSheet().getFilter().setColumnFilterCriteria(2, criteria);
+};
+
+
+
+
+
+}
