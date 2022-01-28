@@ -1,10 +1,41 @@
 var id = '1TFdXJ3VVi-c6pn36PMltkMJDympYS3TDw586uzc8Abw'
 function Caixa(){
-  var Form = HtmlService.createTemplateFromFile("Caixa2")
+  var Form = HtmlService.createTemplateFromFile("Caixa1")
   var Mostrar = Form.evaluate()
-  Mostrar.setTitle("Caixa45").setHeight(500).setWidth(600)
+  Mostrar.setTitle("Caixa").setHeight(500).setWidth(600)
   SpreadsheetApp.getUi().showModalDialog(Mostrar,"Caixa")
 }
+
+function Produtos(){
+  var Form = HtmlService.createTemplateFromFile("Produtos")
+  var Mostrar = Form.evaluate()
+  Mostrar.setTitle("Cadastro de Produtos").setHeight(500).setWidth(400)
+  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Cadastro de Produtos")
+}
+function Pesquisar(){
+  var Form = HtmlService.createTemplateFromFile("Pesquisar1")
+  var Mostrar = Form.evaluate()
+  Mostrar.setTitle("Pesquisa").setHeight(500).setWidth(600)
+  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Pesquisa")
+}
+function Vendas(){
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+  var vendas = spreadsheet.getSheetByName('Vendas')
+  var produtos = spreadsheet.getSheetByName('Base de Preços')
+  linha = 1
+  while(produtos.getRange(linha,2).isBlank() == false){
+    linha = linha+1
+  }
+  var list = produtos.getRange(2,2,linha-2,1).getValues()
+  var group = produtos.getRange(2,4,linha-2,1).getValues()
+  var Form = HtmlService.createTemplateFromFile("Vendas")
+  Form.list = list.map(function(r){return r[0]})
+  Form.group = group.map(function(r){return r[0]})
+  var Mostrar = Form.evaluate()
+  Mostrar.setTitle("Cadastro de Venda").setHeight(500).setWidth(400)
+  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Cadastro de Venda")
+}
+
 function enviar(Dados) {
   var spreadsheet = SpreadsheetApp.openById(id)
   var sheet = spreadsheet.getSheetByName('Fluxo de Caixa')
@@ -12,7 +43,11 @@ function enviar(Dados) {
   sheet.getCurrentCell().getNextDataCell(SpreadsheetApp.Direction.DOWN).activate()
   sheet.getActiveCell().offset(1,0).activate()
   var linha = sheet.getActiveCell().getRow()
-  var data = (new Date).getDate()
+  var data = new Date();
+var dia = String(data.getDate()). padStart(2,'0')
+var mes = String(data.getMonth() + 1). padStart(2,'0')
+var ano = data. getFullYear()
+var data = dia + '/' + mes + '/' + ano
   sheet.getRange(linha,1).setValue(data)
   sheet.getRange(linha, 2).setValue([Dados.ent])
   sheet.getRange(linha, 3).setValue([Dados.forn])
@@ -33,3 +68,46 @@ function onEditAction(e) {
   Caixa()
   ss.getRange('G22').clearContent()
 }
+function enviarProduto(Dados) {
+  var spreadsheet = SpreadsheetApp.openById(id)
+  var sheet = spreadsheet.getSheetByName('Base de Preços')
+  sheet.getRange('B1').activate()
+  sheet.getCurrentCell().getNextDataCell(SpreadsheetApp.Direction.DOWN).activate()
+  sheet.getActiveCell().offset(1,0).activate()
+  var linha = sheet.getActiveCell().getRow()
+  sheet.getRange(linha, 1).setValue(linha-1)
+  sheet.getRange(linha, 2).setValue([Dados.nome])
+  sheet.getRange(linha, 3).setValue([Dados.val])
+  sheet.getRange(linha, 4).setValue([Dados.grupo])
+}
+
+function pesquisa(DadosP) {
+  var splitdata = DadosP.data.split("-")
+  var refdata = (splitdata[2]+'/'+splitdata[1]+'/'+splitdata[0])
+  var spreadsheet = SpreadsheetApp.getActive();
+  spreadsheet.getRange('A1:E1').activate();
+  var currentCell = spreadsheet.getCurrentCell();
+  spreadsheet.getSelection().getNextDataRange(SpreadsheetApp.Direction.DOWN).activate();
+  currentCell.activateAsCurrentCell();
+  spreadsheet.getRange('A1:E').createFilter();
+  spreadsheet.getRange('A:A').setNumberFormat('@')
+  var criteria = SpreadsheetApp.newFilterCriteria()
+  .whenTextEqualTo(refdata)
+  .build();
+  spreadsheet.getActiveSheet().getFilter().setColumnFilterCriteria(1, criteria);
+  var criteria = SpreadsheetApp.newFilterCriteria()
+  .whenTextEqualTo(DadosP.ent)
+  .build();
+  spreadsheet.getActiveSheet().getFilter().setColumnFilterCriteria(2, criteria);
+  
+};
+
+function removerfiltro() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  spreadsheet.getRange('A1:E1').activate();
+  var currentCell = spreadsheet.getCurrentCell();
+  spreadsheet.getSelection().getNextDataRange(SpreadsheetApp.Direction.DOWN).activate();
+  currentCell.activateAsCurrentCell();
+  spreadsheet.getActiveSheet().getFilter().remove();
+  spreadsheet.getRange('A:A').setNumberFormat('dd/MM/yyyy')
+};
