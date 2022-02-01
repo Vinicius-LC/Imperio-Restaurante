@@ -27,13 +27,13 @@ function Vendas(){
     linha = linha+1
   }
   var list = produtos.getRange(2,2,linha-2,1).getValues()
-  var group = produtos.getRange(2,4,linha-2,1).getValues()
+  var valor = produtos.getRange(2,3,linha-2,1).getValues()
   var Form = HtmlService.createTemplateFromFile("Vendas")
-  Form.list = list.map(function(r){return r[0]})
-  Form.group = group.map(function(r){return r[0]})
+  Form.list = list.map(function(r){return r[0];});
+  Form.valor = valor.map(function(r2){return r2[0];});
   var Mostrar = Form.evaluate()
   Mostrar.setTitle("Cadastro de Venda").setHeight(500).setWidth(400)
-  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Cadastro de Venda")
+  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Cadastro de Venda") 
 }
 
 function enviar(Dados) {
@@ -48,10 +48,16 @@ var dia = String(data.getDate()). padStart(2,'0')
 var mes = String(data.getMonth() + 1). padStart(2,'0')
 var ano = data. getFullYear()
 var data = dia + '/' + mes + '/' + ano
+var hora = data.getHours()
+if (hora<=15){
+  var turno = 'Diurno'
+}else{
+  var turno = 'Noturno'
+}
   sheet.getRange(linha,1).setValue(data)
-  sheet.getRange(linha, 2).setValue([Dados.ent])
-  sheet.getRange(linha, 3).setValue([Dados.forn])
-  sheet.getRange(linha, 4).setValue([Dados.desc])
+  sheet.getRange(linha, 2).setValue(turno)
+  sheet.getRange(linha, 3).setValue([Dados.prod])
+  sheet.getRange(linha, 4).setValue([Dados.qnt])
   sheet.getRange(linha, 5).setValue([Dados.val]) 
 }
 
@@ -79,6 +85,31 @@ function enviarProduto(Dados) {
   sheet.getRange(linha, 2).setValue([Dados.nome])
   sheet.getRange(linha, 3).setValue([Dados.val])
   sheet.getRange(linha, 4).setValue([Dados.grupo])
+}
+
+function enviarVenda(Dados){
+  var spreadsheet = SpreadsheetApp.openById(id)
+  var sheet = spreadsheet.getSheetByName('Vendas')
+  sheet.getRange('A1').activate()
+  sheet.getCurrentCell().getNextDataCell(SpreadsheetApp.Direction.DOWN).activate()
+  sheet.getActiveCell().offset(1,0).activate()
+  var linha = sheet.getActiveCell().getRow()
+  var data = new Date();
+  var dia = String(data.getDate()). padStart(2,'0')
+  var mes = String(data.getMonth() + 1). padStart(2,'0')
+  var ano = data. getFullYear()
+  var data = dia + '/' + mes + '/' + ano
+  var hora = data.getHours
+  if(hora<=15){
+    var turno = 'Diurno'
+  } else{
+    var turno = 'Noturno'
+  }
+  sheet.getRange(linha,1).setValue(data)
+  sheet.getRange(linha, 2).setValue(turno)
+  sheet.getRange(linha, 3).setValue([Dados.prod])
+  sheet.getRange(linha, 4).setValue([Dados.qnt])
+  sheet.getRange(linha, 5).setValue(val)
 }
 
 function pesquisa(DadosP) {
