@@ -1,5 +1,7 @@
 var id = '1TFdXJ3VVi-c6pn36PMltkMJDympYS3TDw586uzc8Abw'
 function Caixa(){
+  var spreadsheet = SpreadsheetApp.getActive();
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Fluxo de Caixa'), true);
   var Form = HtmlService.createTemplateFromFile("Caixa1")
   var Mostrar = Form.evaluate()
   Mostrar.setTitle("Caixa").setHeight(500).setWidth(600)
@@ -18,6 +20,38 @@ function Pesquisar(){
   Mostrar.setTitle("Pesquisa").setHeight(500).setWidth(600)
   SpreadsheetApp.getUi().showModalDialog(Mostrar,"Pesquisa")
 }
+
+function CaixaFunc(){
+  var spreadsheet = SpreadsheetApp.getActive();
+  var produtos = spreadsheet.getSheetByName('Base de Preços')
+  var caixaat = spreadsheet.getSheetByName('Tela do Caixa')
+  produtos.getRange('F2').activate();
+  var currentCell = spreadsheet.getCurrentCell();
+  spreadsheet.getSelection().getNextDataRange(SpreadsheetApp.Direction.DOWN).activate();
+  currentCell.activateAsCurrentCell();
+  var bebidas = spreadsheet.getActiveRange().getValues();
+  produtos.getRange('G2').activate();
+  var currentCell = spreadsheet.getCurrentCell();
+  spreadsheet.getSelection().getNextDataRange(SpreadsheetApp.Direction.DOWN).activate();
+  currentCell.activateAsCurrentCell();
+  var refeicao = spreadsheet.getActiveRange().getValues();
+  produtos.getRange('H2').activate();
+  var currentCell = spreadsheet.getCurrentCell();
+  spreadsheet.getSelection().getNextDataRange(SpreadsheetApp.Direction.DOWN).activate();
+  currentCell.activateAsCurrentCell();
+  var outros = spreadsheet.getActiveRange().getValues();
+  caixaat.getRange("A1").activate();
+  var Form = HtmlService.createTemplateFromFile("CaixaFuncionarios")
+  Form.bebidas = bebidas.map(function(r){return r[0];});
+  Form.refeicao = refeicao.map(function(r){return r[0];});
+  Form.outros = outros.map(function(r){return r[0];});
+  var Mostrar = Form.evaluate()
+  Mostrar.setTitle("Registro de Comanda").setHeight(500).setWidth(800)
+  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Registro de Comanda")
+  
+  
+  }
+
 function Vendas(){
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   var vendas = spreadsheet.getSheetByName('Vendas')
@@ -27,10 +61,9 @@ function Vendas(){
     linha = linha+1
   }
   var list = produtos.getRange(2,2,linha-2,1).getValues()
-  var group = produtos.getRange(2,4,linha-2,1).getValues()
   var Form = HtmlService.createTemplateFromFile("Vendas")
-  Form.list = list.map(function(r){return r[0]})
-  Form.group = group.map(function(r){return r[0]})
+  Logger.log(list)
+  Form.list = list.map(function(r){return r[0];});
   var Mostrar = Form.evaluate()
   Mostrar.setTitle("Cadastro de Venda").setHeight(500).setWidth(400)
   SpreadsheetApp.getUi().showModalDialog(Mostrar,"Cadastro de Venda")
@@ -81,6 +114,48 @@ function enviarProduto(Dados) {
   sheet.getRange(linha, 4).setValue([Dados.grupo])
 }
 
+function enviarVenda(Dados){
+  var spreadsheet = SpreadsheetApp.openById(id)
+  var sheet = spreadsheet.getSheetByName('Vendas')
+  var data = new Date();
+  var dia = String(data.getDate()). padStart(2,'0')
+  var mes = String(data.getMonth() + 1). padStart(2,'0')
+  var ano = data. getFullYear()
+  var data = dia + '/' + mes + '/' + ano
+  var hora = data.getHours
+  if(hora<=15){
+    var turno = 'Diurno'
+  } else{
+    var turno = 'Noturno'
+  }
+  Logger.log(turno)
+  var produtos = spreadsheet.getSheetByName('Base de Preços')
+  lin = 1
+  while(produtos.getRange(lin,2).isBlank() == false){
+    lin = lin+1
+  }
+  // Pegando uma lista com os nomes dos produtos e seus valores
+  var list = produtos.getRange(2,2,lin-2,1).getValues()
+  var valor = produtos.getRange(2,3,lin-2,1).getValues()
+  for(var i=0;i<list.length;i++){
+    for(var j=0;j<list[i].length;j++){
+      if(list[i][j]==Dados.prod){
+        var val = valor[i][j]
+      }
+    }
+  }
+  // Salvando dados nas células
+  sheet.getRange('A1').activate()
+  sheet.getCurrentCell().getNextDataCell(SpreadsheetApp.Direction.DOWN).activate()
+  sheet.getActiveCell().offset(1,0).activate()
+  var linha = sheet.getActiveCell().getRow()
+  sheet.getRange(linha, 1).setValue(data)
+  sheet.getRange(linha, 2).setValue(turno)
+  sheet.getRange(linha, 3).setValue([Dados.prod])
+  sheet.getRange(linha, 4).setValue([Dados.qnt])
+  sheet.getRange(linha, 5).setValue(val*[Dados.qnt])
+}
+
 function pesquisa(DadosP) {
   var splitdata = DadosP.data.split("-")
   var refdata = (splitdata[2]+'/'+splitdata[1]+'/'+splitdata[0])
@@ -111,3 +186,11 @@ function removerfiltro() {
   spreadsheet.getActiveSheet().getFilter().remove();
   spreadsheet.getRange('A:A').setNumberFormat('dd/MM/yyyy')
 };
+function Aporte(){
+  var spreadsheet = SpreadsheetApp.getActive();
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Tela do Caixa'), true);
+  var Form = HtmlService.createTemplateFromFile("Aporte")
+  var Mostrar = Form.evaluate()
+  Mostrar.setTitle("Aporte").setHeight(500).setWidth(600)
+  SpreadsheetApp.getUi().showModalDialog(Mostrar,"Aporte")
+}
