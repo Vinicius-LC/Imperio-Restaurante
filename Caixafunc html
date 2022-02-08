@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+      <div class = "objeto">
+        <label><font color = "black" size = +2> <b> Comanda 1 </b> </font></label>
+        <div class="row">
+          <div class="col">
+              <select id="refS" class="browser-default">
+              <option value="" disabled selected>Refeição</option>
+              <? for(var j=0; j<refeicao.length;j++){ ?>
+              <option><?= refeicao[j] ?></option>
+              <? } ?>              
+              </select>
+                <input id="qntR" type="number" class="validate">
+                <label for="qntR">Quantidade</label>
+          </div>
+          <div class="col">
+            <select id="bebS" class="browser-default">
+            <option value="" disabled selected>Bebida</option>
+            <? for(var j=0; j<bebidas.length;j++){ ?>
+            <option><?= bebidas[j] ?></option>
+            <? } ?>
+            <input id="qntB" type="number" class="validate">
+            <label for="qntB">Quantidade</label>
+            </select> 
+          </div>
+          <div class="col">
+            <select id="outS" class="browser-default">
+            <option value="" disabled selected>Outros</option>
+            <? for(var j=0; j<outros.length;j++){ ?>
+            <option><?= outros[j] ?></option>
+            <? } ?>
+            <input id="qntO" type="number" class="validate">
+            <label for="qntO">Quantidade</label>
+            </select> 
+          </div>
+        </div>
+        <p id="demo">
+          Produtos
+        </p>
+        <div>
+          <button class="btn waves-effect green" type="button" id="add" onclick="Add()">Adicionar
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+      </div>
+    </body>
+      <!-- Compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script>
+        var campoR = document.getElementById('refS')
+        var qntR = document.getElementById('qntR')
+        var campoB = document.getElementById('bebS')
+        var qntB = document.getElementById('qntB')
+        var campoO = document.getElementById('outS')
+        var qntO = document.getElementById('qntO')
+        var baixas = []
+        M.toast({html: baixas.length})
+        function Add(){
+          var vet = [campoR.value, qntR.value,campoB.value, qntB.value,campoO.value, qntO.value]
+          baixas.push(vet)
+          M.toast({html: baixas})
+          M.toast({html: baixas.length})
+          vet.map(function(r){document.getElementById('demo').insertAdjacentHTML('beforebegin',r+' / ')})
+        }
+      </script>
+<Script>
