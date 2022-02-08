@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
   <html>
     <head>
       <!--Import Google Icon Font-->
@@ -14,10 +14,14 @@
       <div class = "objeto">
         <div class="row">
 
-          <div class="input-field col s6">
-            <i class="material-icons prefix">date_range</i>
-            <input id="mes" type="text" class="validate">
-            <label for="mes">Mês</label>
+          <div class="col s6">
+            <label> Mês </label>
+            <select id = "mes"  class = "browser-default">
+              <option value = "" disabled selected> Escolha um mês </option>
+              <? for(var i = 0; i<listMeses.length; i++) {?>
+              <option ><?=listMeses[i];?> </option>
+              <?}?>   
+            </select>
           </div>
 
           <div class="input-field col s6">
@@ -53,24 +57,25 @@
         </div>
 
         <div class = "center">
-
-          <button class="btn waves-effect green" type="submit" name="btn1">Salvar
+      
+     
+          <button class="btn waves-effect green" type="submit" id="botaoSalvar">Salvar  
             <i class="material-icons right">save</i>
           </button>
 
-          <button class="btn waves-effect blue" type="submit" name="btn2">Pesquisar
+          <!--<button class="btn waves-effect blue" type="submit" id="botaoPesquisar">Pesquisar
             <i class="material-icons right">search</i>
           </button>
 
-          <button class="btn waves-effect orange" type="submit" name="btn3">Editar
+          <button class="btn waves-effect orange" type="submit" id="botaoEditar">Editar
             <i class="material-icons right">edit</i>
           </button>
 
-          <button class="btn waves-effect red" type="submit" name="btn4">Excluir
+          <button class="btn waves-effect red" type="submit" id="botaoExcluir">Excluir
             <i class="material-icons right">delete</i>
-          </button>
+          </button> -->
 
-          <button class="btn waves-effect black" type="submit" name="btn5">Fechar
+          <button class="btn waves-effect black" type="submit" id="botaoFechar">Fechar
             <i class="material-icons right">close</i>
           </button>
         
@@ -80,5 +85,65 @@
 
       <!-- Compiled and minified JavaScript -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<Script>
+
+  var CampoMes = document.getElementById("mes");
+  var CampoAluguel = document.getElementById("aluguel");
+  var CampoGas = document.getElementById("gas");
+  var CampoInternet = document.getElementById("internet");
+  var CampoLuz = document.getElementById("luz");
+  var CampoAgua = document.getElementById("agua");      
+
+  document.getElementById("botaoSalvar").addEventListener("click",SalvarDados);
+
+  function SalvarDados() 
+  {
+   
+    var Mes = CampoMes.value;
+    var Aluguel = CampoAluguel.value;
+    var Gas = CampoGas.value;
+    var Internet = CampoInternet.value;
+    var Luz = CampoLuz.value;
+    var Agua = CampoAgua.value;
+  
+    if (Mes.trim().length == 0 || Aluguel.trim().length == 0 || Gas.trim().length == 0 || Internet.trim().length == 0 || Luz.trim().length == 0 || Agua.trim().length == 0) 
+    {
+      M.toast({html: "Preencher todos os campos!"});
+    }
+    else 
+    {
+      var Dados = 
+      {
+        Mes: CampoMes.value,
+        Aluguel: CampoAluguel.value,
+        Gas: CampoGas.value,
+        Internet: CampoInternet.value,
+        Luz: CampoLuz.value,
+        Agua: CampoAgua.value,
+      };
+      google.script.run.salvarDados(Dados)
+      M.toast({html: "Testando função!"});
+      google.script.run.CustosMensais()
+      function Salvar() 
+      {
+        M.toast({html: 'Atualizar' });
+        
+        CampoMes.value = "";
+        CampoAluguel.value = "";
+        CampoGas.value = "";
+        CampoInternet.value = "";
+        CampoLuz.value = "";
+        CampoAgua.value = "";
+      }
+    } 
+  }
+  document.getElementById("botaoFechar").addEventListener('click',Fechar);
+
+  function Fechar () {
+    google.script.host.close();
+  }
+</script>
+
     </body>
-  </html>
+</html>
