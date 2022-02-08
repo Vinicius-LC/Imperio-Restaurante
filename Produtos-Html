@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+      <div class="container">
+        <select class="browser-default" id="Grupo">
+          <option value="" selected disabled>Defina o Grupo</option>
+          <option value="Bebidas">Bebidas</option>
+          <option value="Restaurante">Restaurante</option>
+          <option value="Delivery">Delivery</option>
+          <option value="Diversos">Diversos</option>
+        </select>
+        <div class="input-field col s6">
+          <input id="Nome" type="text">
+          <label class="active" for="Nome">Nome do Produto</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="Valor" type="number">
+          <label class="active" for="Valor">Valor</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="ID" type="text">
+          <label class="active" for="ID">ID do Produto</label>
+        </div>
+          <br> <br>
+        <div>
+          <button class="btn waves-effect green" type="button" id="confirma" onclick="SalvarP()">Confirma
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script>
+        var CampoNome = document.getElementById('Nome')
+        var CampoID = document.getElementById("ID")
+        var CampoVal = document.getElementById("Valor")
+        var CampoGrupo = document.getElementById('Grupo')
+        function SalvarP() {
+          var nome = CampoNome.value
+          var val = CampoVal.value
+          var ID = CampoID.value
+          var grupo = CampoGrupo.value
+          var Dados = {
+            nome: CampoNome.value,
+            ID: CampoID.value,
+            val: CampoVal.value,
+            grupo: CampoGrupo.value
+          }
+          google.script.run.enviarProduto(Dados)
+          M.toast({html: 'Produto salvo com sucesso!'})
+          document.close()
+          google.script.run.Produtos()
+        }
+      </script>
+    </body>
+  </html>
