@@ -1,12 +1,75 @@
-function ContasMensais() {
+var urlPlanilha = "https://docs.google.com/spreadsheets/d/1TFdXJ3VVi-c6pn36PMltkMJDympYS3TDw586uzc8Abw/edit#gid=1870743378"
 
-  var Form = HtmlService.createTemplateFromFile("ContasMensais");
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile("FormContasMensais");
+}
+
+function ContasMensais() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  spreadsheet.setActiveSheet(spreadsheet.getSheetByName('Custos_Mensais'), true);
+
+  var Form = HtmlService.createTemplateFromFile("FormContasMensais");
 
   var MostrarForm = Form.evaluate();
 
   MostrarForm.setTitle("Cadastro Contas Mensais").setHeight(300).setWidth(650);
 
   SpreadsheetApp.getUi().showModalDialog(MostrarForm, "Cadastro Contas Mensais");
-  
+
 }
 
+var Planilha = SpreadsheetApp.openByUrl(urlPlanilha);
+var Guia = Planilha.getSheetByName("Custos_Mensais");
+var LinhaApagada = null;
+
+function salvarDados(Dados) {
+  
+  var Linha = 1;
+  var K = false;
+
+  while((K == false)) {  
+      if (Guia.getRange(Linha+1, 2).isBlank() == true) {
+        if(Guia.getRange(Linha+2, 2).isBlank() == true) {
+          K = true;          
+        }
+        else {
+          LinhaApagada = Linha + 1;          
+          Guia.getRange(Linha+1,1).activate();  
+          Guia.deleteRows(Guia.getActiveRange().getRow(), Guia.getActiveRange().getNumRows());    
+        }
+      }
+    Linha = Linha + 1;
+  }
+  
+
+
+  // Adiciona os valores na tabela.
+  Guia.getRange(Linha, 2).setValue([Dados.Mes]);
+  Guia.getRange(Linha, 3).setValue([Dados.Aluguel]);
+  Guia.getRange(Linha, 4).setValue([Dados.Gas]);
+  Guia.getRange(Linha, 5).setValue([Dados.Internet]);
+  Guia.getRange(Linha, 6).setValue([Dados.Luz]);
+  Guia.getRange(Linha, 7).setValue([Dados.Agua]);
+  Guia.getRange(Linha,2,1,6).activate();
+  Guia.getActiveRangeList().setBorder(true, true, true, true, true, true, '#000000', SpreadsheetApp.BorderStyle.SOLID).setHorizontalAlignment("center");
+
+  ColoreCelulas();
+}
+
+function ColoreCelulas() {
+  
+  var LinhaCC = LinhaApagada;
+
+  while(Guia.getRange(LinhaCC, 2).isBlank() == false) {  
+    Guia.getRange(LinhaCC,2,1,6).activate();
+    if ((LinhaCC%2) == 0) {
+      Guia.getActiveRangeList().setBackground('#ffffff');
+    }
+    else {
+      Guia.getActiveRangeList().setBackground('#eef7e3');
+    }
+    LinhaCC = LinhaCC + 1;
+  }
+}
+
+var listMeses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
