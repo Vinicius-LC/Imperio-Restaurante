@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+      <div class = "objeto">
+        <label><font color = "black" size = +2> <b> Aporte </b> </font></label>
+        <div class="row">
+          <div class="col">
+          <input id="qnt" type="number" class="validate">
+          <label for="qnt">Quantidade</label>
+          </div>
+          <div class="col">
+          <input id="desc" type="text" class="validate">
+          <label for="desc">Descrição</label>
+          </div>
+        </div>
+        <div>
+          <button class="btn waves-effect green" type="button" id="add" onclick="Add()">Adicionar
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+      </div>
+    </body>
+      <!-- Compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script>
+        var qnt = document.getElementById('qnt')
+        var desc = document.getElementById('desc')
+        function Add(){
+          var Dados = {
+            Quantidade: qnt.value,
+            Descrição: desc.value
+          }
+          google.script.run.Save()
+          qnt = ''
+          desc = ''
+        }
+      </script>
+<Script>
